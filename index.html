@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+	<meta charset="UTF-8">
+	<title>My Todo App</title>
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="dark:bg-primary bg-gray-200 awesome-scroll">
+	<!-- dark mode toggle starts -->
+	<div class="absolute select-none top-3 right-3 flex items-center">
+		<span class=" tracking-wider pr-2 text-primary-dark dark:text-white">MODE</span>
+		<div class="cursor-pointer w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5" data-type="toggle" data-bgclass="bg-primary-light">
+			<div class="toggler h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-slate-700/10 transition duration-200 ease-in-out"></div>
+		</div>
+	</div>
+	<!-- dark mode toggle ends -->
+	<!-- main container starts -->
+	<div class="max-w-[900px] mx-auto px-5">
+		<h1 class="text-center dark:text-slate-50 text-primary-light text-3xl font-bold pt-10 mb-5">Add a Todo</h1>
+		<div class=" w-full add-task">
+		<form onsubmit="(e)=>{e.preventDefault()}" class="flex justify-between md:flex-row flex-col">
+			<input type="text" name="content" placeholder="e.g. Let's go steal a blog!" autofocus autocomplete="off" class="grow-[2] mr-2 px-4 dark:focus-visible:outline-primary focus-visible:outline-primary-vlight text-primary h-10">
+			<button type="submit" id="btn_add" class="dark:bg-white dark:hover:bg-slate-50 dark:active:bg-slate-200 dark:text-primary bg-primary-vlight hover:bg-primary-light active:bg-primary text-white px-3 mt-3 md:mt-0 m-auto h-10 text-lg tracking-wider rounded-sm font-semibold transition-colors" onfocus="$('.add-task input').focus()">SUBMIT</button>
+		</form>
+		</div>
+		<div class="tasks-list md:pt-4 pt-2 mx-auto md:w-[75%] max-w-[35rem]">
+		</div>
+	</div>
+	<!-- main container ends -->
+	<!-- confirm box starts here -->
+	<div class="absolute inset-0 bg-opacity-50 bg-black z-40 hidden" id="confirm-box">
+		<div class="max-w-[400px] bg-opacity-95 m-auto bg-slate-200 text-primary-dark flex flex-col p-3 rounded-md rounded-b-none transition-colors">
+			<!-- confirm message to be added here for confirm box -->
+			<div id="confirm-message" class="text-center">
+				
+			</div>
+			<div class="flex justify-center mt-2">
+				<button name="confirm-yes"
+					class="bg-red-500 hover:bg-red-600 active:bg-red-700 text-white px-5 py-2 my-2 text-sm mx-1 tracking-wider rounded-sm font-semibold transition-colors">YES</button>
+				<button name="confirm-no"
+					class="dark:bg-primary dark:hover:bg-primary-dark dark:active:bg-primary-dark bg-primary-vlight hover:bg-primary-light transition-colors text-white px-5 py-2 my-2 mx-1 text-sm tracking-wider rounded-sm font-semibold">NO</button>
+			</div>
+		</div>
+	</div>
+	<!-- confirm box ends here -->
+
+	<div class="black_overlay inset-0 absolute bg-black bg-opacity-50 z-40 hidden" id="background-overlay"></div>
+	
+	<div id="task-detail" class="hidden absolute z-50" style="top: 160px;left: 801px;">
+	</div>
+	<div class="absolute -top-16 w-full transition-transform duration-500 px-5" id="alert-box">
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/store.js"></script>
+	<script type="module" src="js/base.js"></script>
+	<script>
+		$(function () {
+			$('[data-type=toggle]').on('click',function (e) {
+				let $this=$(this)
+				$('html').toggleClass('dark')
+				$this.find('.toggler').toggleClass('translate-x-full')
+				$this.toggleClass(`${$this.data('bgclass')}`)
+			})
+		});
+	</script>
+</body>
+
+</html>
