@@ -19,27 +19,27 @@ var prev_alert_timeout=null
         ;
 
 
-    /*声明一下开机启动函数*/
+    /*State the boot start function*/
     init();
 
 
 
-    /*添加Task的动作监听*/
+    /*Add task action monitoring*/
     $form_add_task.on('click',on_add_task_form_submit);
 
-    /*查找并监听所有删除按钮的点击事件*/
+    /*Find and monitor all the click events of the delete button*/
     function trimtitle(sentence,characters) {
         return sentence.length>characters? sentence.slice(0,characters)+'...':sentence
     }
     function listen_task_delete() {
         $task_delete_trigger.on('click',async function(){
             var $this = $(this);
-            /*找到删除按钮所在task元素*/
+            /*Find the task element where the delete button is located*/
             var $item = $this.parent().parent();
             var index = $item.data('index');
-            /*确认是否删除*/
+            /*Confirm whether to delete*/
             var tmp = await confirmMsg('Sure to Delete '+trimtitle(task_list[index].content,30));
-            /*调用delete_task*/
+            /*Call delete_task*/
             tmp ? delete_task(index):null;
         })
     }
@@ -55,7 +55,7 @@ var prev_alert_timeout=null
 
         })
     }
-    /*查看Task注释*/
+    /*View TASK annotation*/
     function show_task_detail(index) {
         render_task_detail(index);
         $background_overlay.fadeIn(100)
@@ -78,20 +78,20 @@ var prev_alert_timeout=null
         $task_detail.fadeOut(150);
         $background_overlay.fadeOut(100)
     }
-    /*表单添加task*/
+    /*Add TASK in the form*/
     function on_add_task_form_submit(e) {
         var new_task = {};
-        /*禁用默认行为*/
+        /*Disable the default behavior*/
         e.preventDefault();
-        /*获取新Task内容*/
+        /*Get the new task content*/
         var $input = $('div.add-task').find('input[name=content]');
         new_task.content = $input.val();
-        /*如果输入内容为空 不执行直接返回*/
+        /*If the input content is empty, it is not executed and returns directly*/
         if(!new_task.content){
            prev_alert_timeout = showAlert('WHATS THE PROBLEM',3000,prev_alert_timeout);
             return;
         }
-        /*将新Task存入StoreJS*/
+        /*Stay the new TASK into Storejs*/
         if(add_task(new_task)) {
             
             prev_alert_timeout = showAlert(`Added Todo `+trimtitle(new_task.content,30),1500,prev_alert_timeout)
@@ -99,32 +99,32 @@ var prev_alert_timeout=null
         }
     }
 
-    /*将新的task存入到store.js*/
+    /*Save the new task into Store.js*/
     function add_task(new_task) {
-        /*将新Task推入task_list*/
+        /*Push the new task into task_list*/
         task_list.push(new_task);
-        /*更新localStore*/
+        /*Update LocalStore*/
         refresh_task_list();
         return true;
     }
 
-    /*删除一条task*/
+    /*Delete a task*/
     function delete_task(index) {
-        /*如果没有index或index在tasklist中不存在*/
+        /*If there is no index or index in the Tasklist*/
         if(index == undefined || !task_list[index]) return;
         // the title can be large so removing extra words and adding ... if possible
         delete task_list[index];
-        /*更新localStorage*/
+        /*Update LocalStorage*/
         refresh_task_list();
     }
 
-    /*刷新localStorage数据并更新Div模板*/
+    /*Refresh the LocalStorage data and update the DIV template*/
     function refresh_task_list() {
         store.set('task_list',task_list);
         render_task_list();
         return true;
     }
-    /*渲染指定task的详细信息*/
+    /*Details of rendering specify TASK*/
     function render_task_detail(index) {
         if(index == undefined || !task_list[index])
             return;
@@ -166,7 +166,7 @@ var prev_alert_timeout=null
             data.desc = $(this).find('[name = desc]').val();
             data.remind_date = $(this).find('[name = remind_date]').val();
 
-            //写入localstorage
+            //Write to LocalStorage
             update_task(index,data);
             hide_task_detail();
         })
@@ -176,7 +176,7 @@ var prev_alert_timeout=null
         })
     }
     /*
-    *渲染【.task_list】的函数
+    *Rendering [.task_list] function
     */
     function render_task_list() {
         var $task_list = $('.tasks-list');
@@ -192,7 +192,7 @@ var prev_alert_timeout=null
         listen_task_detail();
     }
     /*
-    *渲染一条task的模板
+    *Rendering a Task template
     */
     function render_task_item(data,index) {
         if(!data || !index) return;
@@ -207,7 +207,7 @@ var prev_alert_timeout=null
         return $(list_item_tpl);
     }
 
-    /*开机函数*/
+    /*Boot function*/
     function init() {
         task_list = store.get('task_list') || [];
         if(task_list.length) render_task_list();
