@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" class="">
-<head>
+	<head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Simple todo App to store your daily todos">
+	<meta name="keywords" content="todo,make todo, write todo, add a todo, shreyansh-gupta todo">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" href="favicon.png">
 	<title>My Todo App</title>
 	<link rel="stylesheet" href="css/main.css">
 </head>
@@ -11,14 +15,14 @@
 	<!-- dark mode toggle starts -->
 	<div class="absolute select-none top-3 right-3 flex items-center">
 		<span class=" tracking-wider pr-2 text-primary-dark dark:text-white">MODE</span>
-		<div class="cursor-pointer w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5" data-type="toggle" data-bgclass="bg-primary-light">
+		<div class="cursor-pointer w-10 rounded-full p-1 ring-1 ring-inset transition duration-200 ease-in-out bg-slate-900/10 ring-slate-900/5" data-type="toggle" data-bgclass="bg-primary-light" id="dark-mode-toggle">
 			<div class="toggler h-4 w-4 rounded-full bg-white shadow-sm ring-1 ring-slate-700/10 transition duration-200 ease-in-out"></div>
 		</div>
 	</div>
 	<!-- dark mode toggle ends -->
 	<!-- main container starts -->
 	<div class="max-w-[900px] mx-auto px-5">
-		<h1 class="text-center dark:text-slate-50 text-primary-light text-3xl font-bold pt-10 mb-5">Add a Todo</h1>
+		<h1 class="text-center dark:text-slate-50 text-primary-light text-3xl font-bold pt-12 mb-5">Add a Todo</h1>
 		<div class=" w-full add-task">
 		<form onsubmit="(e)=>{e.preventDefault()}" class="flex justify-between md:flex-row flex-col">
 			<input type="text" name="content" placeholder="e.g. Let's go steal a blog!" autofocus autocomplete="off" class="grow-[2] mr-2 px-4 dark:focus-visible:outline-primary focus-visible:outline-primary-vlight text-primary h-10">
@@ -57,11 +61,22 @@
 	<script type="module" src="js/base.js"></script>
 	<script>
 		$(function () {
+			let mode = store.get('mode')
+			mode?$('html').toggleClass(mode):null
+			if (mode) {
+				let $darkModeToggler=$('#dark-mode-toggle')
+				$darkModeToggler.find('.toggler').toggleClass('translate-x-full')
+				$darkModeToggler.toggleClass(`${$darkModeToggler.data('bgclass')}`)
+			}
 			$('[data-type=toggle]').on('click',function (e) {
 				let $this=$(this)
-				$('html').toggleClass('dark')
 				$this.find('.toggler').toggleClass('translate-x-full')
 				$this.toggleClass(`${$this.data('bgclass')}`)
+			})
+			$('#dark-mode-toggle').on('click',function () {
+				let $html=$('html')
+				$html.hasClass('dark')?store.set('mode',''):store.set('mode','dark')
+				$html.toggleClass('dark')
 			})
 		});
 	</script>
